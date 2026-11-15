@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7f4">
+  <meta name="description" content="Személyes vércukor- és inzulinnapló naptárnézettel.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Diabétesz napló</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Fő navigáció">
+      <a class="brand" href="#calendar" aria-label="Naponta főoldal">
+        <span class="brand-mark" aria-hidden="true">D</span><span>Diabétesz napló</span>
+      </a>
+      <div class="sidebar-label">NAPLÓ</div>
+      <button class="nav-item active" data-view="calendar"><span class="nav-icon">▦</span>Naptár</button>
+      <button class="nav-item" data-view="day"><span class="nav-icon">◷</span>Mai nap</button>
+      <div class="sidebar-bottom">
+        <div class="privacy-note"><span class="lock-icon">⌑</span><div><strong>A te adataid</strong><br><span>Ezen az eszközön tárolva</span></div></div>
+        <button class="profile-link" id="profileButton"><span class="avatar" id="avatarInitial">–</span><span class="profile-link-text"><strong id="sideName">Profil beállítása</strong><small>Egészségügyi adatok</small></span><span class="chevron">›</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">D</span><span>Diabétesz napló</span></div>
+        <div class="topbar-date" id="todayLabel"></div>
+        <button class="icon-button mobile-profile" id="mobileProfileButton" aria-label="Profil beállítása">☺</button>
+      </header>
+
+      <section class="page-heading">
+        <div><p class="eyebrow">A TE EGÉSZSÉGNAPLÓD</p><h1 id="headingTitle">Naptár</h1><p class="subtitle">Kövesd a méréseidet, a saját ritmusodban.</p></div>
+        <div class="heading-actions"><button class="secondary-button report-button" id="reportButton">⇩ PDF-jelentés</button><button class="primary-button" id="addEntryButton"><span>＋</span> Új bejegyzés</button></div>
+      </section>
+
+      <div class="content-grid">
+        <section class="calendar-card" aria-label="Naptár">
+          <div class="calendar-toolbar">
+            <div class="month-controls"><button class="icon-button" id="prevMonth" aria-label="Előző hónap">‹</button><h2 id="monthTitle"></h2><button class="icon-button" id="nextMonth" aria-label="Következő hónap">›</button></div>
+            <button class="today-button" id="todayButton">Ma</button>
+          </div>
+          <div class="calendar-grid" id="calendarGrid" role="grid" aria-label="Havi naptár"></div>
+          <div class="calendar-legend"><span><i class="legend-dot glucose-dot"></i>Vércukormérés</span><span><i class="legend-dot insulin-dot"></i>Inzulin</span></div>
+        </section>
+
+        <aside class="day-panel" aria-live="polite">
+          <div class="day-panel-header"><div><p class="eyebrow" id="selectedEyebrow">KIVÁLASZTOTT NAP</p><h2 id="selectedDateTitle"></h2></div><button class="icon-button" id="dayAddButton" aria-label="Bejegyzés hozzáadása">＋</button></div>
+          <div class="day-summary" id="daySummary"></div>
+          <div class="entry-list" id="entryList"></div>
+          <button class="text-button" id="dayAddText">＋ Bejegyzés hozzáadása</button>
+        </aside>
+      </div>
+      <footer class="app-footer">A naplózóeszköz nem helyettesíti az orvosi tanácsot.</footer>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobil navigáció">
+    <button class="mobile-nav-item active" data-view="calendar"><span>▦</span>Naptár</button>
+    <button class="mobile-add" id="mobileAddButton" aria-label="Új bejegyzés hozzáadása">＋</button>
+    <button class="mobile-nav-item" data-view="day"><span>◷</span>Napom</button>
+  </nav>
+
+  <dialog id="entryDialog" class="dialog">
+    <form id="entryForm" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">NAPLÓBEJEGYZÉS</p><h2 id="entryDialogTitle">Új bejegyzés</h2></div><button type="button" class="icon-button close-dialog" aria-label="Bezárás">×</button></div>
+      <label class="field">Dátum és idő<input name="dateTime" type="datetime-local" required></label>
+      <div class="form-section"><span class="form-section-title"><i class="legend-dot glucose-dot"></i> Vércukor</span>
+        <div class="field-row"><label class="field">Érték<input name="glucose" type="number" min="0" max="50" step="0.1" inputmode="decimal" placeholder="pl. 6,2"></label><label class="field">Mértékegység<select name="unit"><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select></label></div>
+      </div>
+      <div class="form-section"><span class="form-section-title"><i class="legend-dot insulin-dot"></i> Inzulin</span>
+        <div class="field-row"><label class="field">Napszak<select name="insulinType"><option value="day">Nappali</option><option value="night">Éjjeli</option></select></label><label class="field">Mennyiség (egység)<input name="insulinUnits" type="number" min="0" max="500" step="0.5" inputmode="decimal" placeholder="pl. 4"></label></div>
+      </div>
+      <label class="field">Megjegyzés <span class="optional">(nem kötelező)</span><textarea name="note" rows="2" placeholder="Étkezés, közérzet…"></textarea></label>
+      <p class="form-error" id="entryError" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="secondary-button close-dialog">Mégse</button><button type="submit" class="primary-button">Mentés</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="reportDialog" class="dialog">
+    <form id="reportForm" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">ÖSSZESÍTŐ</p><h2>PDF-jelentés</h2></div><button type="button" class="icon-button close-dialog" aria-label="Bezárás">×</button></div>
+      <p class="dialog-intro">Válaszd ki az időszakot. A jelentés minden napot, a méréseket, a napi átlagot és a heti átlagot tartalmazza.</p>
+      <div class="field-row"><label class="field">Kezdő dátum<input name="startDate" id="reportStart" type="date" required></label><label class="field">Záró dátum<input name="endDate" id="reportEnd" type="date" required></label></div>
+      <p class="form-hint">A jelentés a böngésző nyomtatási ablakában nyílik meg. Ott válaszd a „Mentés PDF-ként” lehetőséget. Az átlagok mértékegységenként külön szerepelnek.</p>
+      <p class="form-error" id="reportError" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="secondary-button close-dialog">Mégse</button><button type="button" id="generateReportButton" class="primary-button">Jelentés készítése</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="profileDialog" class="dialog">
+    <form id="profileForm" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">SZEMÉLYES BEÁLLÍTÁSOK</p><h2>Egészségügyi profil</h2></div><button type="button" class="icon-button close-dialog" aria-label="Bezárás">×</button></div>
+      <p class="dialog-intro">Az adatok segítenek személyessé tenni a naplódat. Most csak ezen az eszközön tárolódnak.</p>
+      <label class="field">Neved <span class="optional">(nem kötelező)</span><input name="name" type="text" autocomplete="name" placeholder="Hogy szólíthatunk?"></label>
+      <div class="field-row"><label class="field">Életkor<input name="age" type="number" min="1" max="120" inputmode="numeric" placeholder="év"></label><label class="field">Testmagasság<input name="height" type="number" min="40" max="250" inputmode="decimal" placeholder="cm"></label><label class="field">Testsúly<input name="weight" type="number" min="10" max="400" step="0.1" inputmode="decimal" placeholder="kg"></label></div>
+      <label class="field">Diabétesz típusa<select name="diabetesType"><option value="">Válassz…</option><option>1-es típus</option><option>2-es típus</option><option>Terhességi diabétesz</option><option>Egyéb</option><option>Nem szeretném megadni</option></select></label>
+      <div class="form-section"><span class="form-section-title">Inzulinok és napi alkalmak</span>
+        <div class="insulin-profile"><h3>Nappali inzulin</h3><div class="field-row"><label class="field">Inzulin neve<input name="dayInsulinName" type="text" placeholder="pl. NovoRapid"></label><label class="field">Alkalom / nap<input name="dayInsulinTimes" type="number" min="1" max="20" inputmode="numeric" placeholder="pl. 3"></label></div></div>
+        <div class="insulin-profile"><h3>Éjjeli inzulin</h3><div class="field-row"><label class="field">Inzulin neve<input name="nightInsulinName" type="text" placeholder="pl. Lantus"></label><label class="field">Alkalom / nap<input name="nightInsulinTimes" type="number" min="1" max="20" inputmode="numeric" placeholder="pl. 1"></label></div></div>
+      </div>
+      <p class="form-hint">A profil egészségügyi adatait csak te látod ezen a készüléken. Ne használd sürgősségi vagy kezelési döntésekhez.</p>
+      <div class="dialog-actions"><button type="button" class="secondary-button close-dialog">Mégse</button><button type="submit" class="primary-button">Profil mentése</button></div>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
