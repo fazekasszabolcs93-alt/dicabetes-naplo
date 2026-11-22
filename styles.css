@@ -13,3 +13,59 @@
 .auth-card{width:min(100%,420px);padding:30px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 42px #2549360d}
 .auth-brand{padding:0;margin:0 0 34px;font-size:18px}.auth-card>.eyebrow{margin-bottom:7px}.auth-card h1{margin:0;color:#25362e;font:700 27px Manrope,sans-serif;letter-spacing:-.7px}.auth-description{font-size:13px;line-height:1.6;color:#77857c;margin:8px 0 22px}.auth-form{display:grid;gap:14px}.auth-form .primary-button{width:100%;margin-top:2px}.auth-toggle{justify-self:center;padding:3px 6px}.auth-footnote{border-top:1px solid #edf0ed;margin:22px 0 0;padding-top:15px;color:#8a968e;font-size:10px;line-height:1.6}.auth-status{display:flex;align-items:center;gap:12px;color:#77837c;font-size:11px}.auth-status .text-button{padding:5px 0}
 @media(max-width:760px){.auth-card{padding:25px 20px}.auth-brand{margin-bottom:28px}.auth-status{gap:6px;font-size:9px}.auth-status #authEmail{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.topbar{gap:7px}.topbar-date{margin-left:auto}}
+
+/* Give the installed iPhone web app roomier controls without changing Safari's website layout. */
+@media(max-width:760px){
+  html.standalone-app{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  html.standalone-app body{min-height:100dvh;overscroll-behavior-y:contain}
+  html.standalone-app .main-content{padding-top:env(safe-area-inset-top);padding-left:16px;padding-right:16px}
+  html.standalone-app .topbar{height:calc(62px + env(safe-area-inset-top));gap:9px}
+  html.standalone-app .topbar-date{font-size:12px}
+  html.standalone-app .mobile-brand{font-size:16px}
+  html.standalone-app .mobile-brand .brand-mark{width:30px;height:30px;font-size:18px}
+  html.standalone-app .auth-status{font-size:11px}
+  html.standalone-app .auth-status #authEmail{max-width:130px}
+  html.standalone-app .page-heading{padding:18px 0 20px;align-items:flex-start}
+  html.standalone-app .page-heading h1{font-size:27px}
+  html.standalone-app .subtitle{font-size:13px;line-height:1.45}
+  html.standalone-app .calendar-card{padding:15px 14px 12px;border-radius:15px}
+  html.standalone-app .calendar-toolbar{margin-bottom:14px}
+  html.standalone-app .month-controls{gap:9px}
+  html.standalone-app .month-controls h2{font-size:17px;min-width:130px}
+  html.standalone-app .icon-button{width:42px;height:42px;font-size:27px}
+  html.standalone-app .today-button{min-height:40px;padding:8px 13px;font-size:12px}
+  html.standalone-app .weekday{height:35px;font-size:11px}
+  html.standalone-app .calendar-cell{min-height:62px;padding:6px}
+  html.standalone-app .day-number{width:27px;height:27px;font-size:12px}
+  html.standalone-app .cell-markers{margin-top:7px;gap:4px}
+  html.standalone-app .marker{width:5px;height:5px}
+  html.standalone-app .calendar-legend{font-size:11px;padding-top:12px}
+  html.standalone-app .day-panel{padding:17px 16px 15px;border-radius:15px;min-height:250px}
+  html.standalone-app .day-panel-header h2{font-size:18px}
+  html.standalone-app .day-summary{min-height:50px;font-size:13px}
+  html.standalone-app .summary-chip strong{font-size:14px}
+  html.standalone-app .empty-state strong{font-size:14px}
+  html.standalone-app .empty-state p{font-size:13px}
+  html.standalone-app .entry-time,html.standalone-app .entry-note{font-size:12px}
+  html.standalone-app .value-pill{font-size:12px;padding:7px 9px}
+  html.standalone-app .mobile-nav{height:calc(76px + env(safe-area-inset-bottom));padding:8px 24px calc(8px + env(safe-area-inset-bottom))}
+  html.standalone-app .mobile-nav-item{font-size:11px;gap:4px}
+  html.standalone-app .mobile-nav-item span{font-size:21px}
+  html.standalone-app .mobile-add{width:50px;height:50px;border-radius:17px;font-size:28px}
+  html.standalone-app .primary-button,html.standalone-app .secondary-button{min-height:46px;font-size:14px}
+  html.standalone-app .text-button{font-size:13px}
+  html.standalone-app .dialog{width:100%;height:100dvh;max-height:100dvh;margin:0;padding:calc(20px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));border-radius:0;overflow:auto}
+  html.standalone-app .dialog form{gap:16px}
+  html.standalone-app .dialog-heading h2{font-size:22px}
+  html.standalone-app .field{font-size:13px;gap:8px}
+  html.standalone-app .field input,html.standalone-app .field select,html.standalone-app .field textarea{min-height:48px;padding:11px 12px;font-size:16px}
+  html.standalone-app .field textarea{min-height:92px}
+  html.standalone-app .form-section{gap:13px;padding-top:16px}
+  html.standalone-app .form-section-title{font-size:13px}
+  html.standalone-app .dialog-actions{gap:11px;margin-top:auto;padding-top:8px}
+  html.standalone-app .auth-gate{min-height:100dvh;padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom))}
+  html.standalone-app .auth-card{padding:26px 22px}
+  html.standalone-app .auth-description{font-size:14px}
+  html.standalone-app .auth-form .field{font-size:13px}
+  html.standalone-app .auth-form .field input{min-height:50px;font-size:16px}
+}
