@@ -11,7 +11,25 @@
   <title>Diabétesz napló</title>
 </head>
 <body>
-  <div class="app-shell">
+  <section class="auth-gate" id="authGate" aria-labelledby="authTitle">
+    <div class="auth-card">
+      <a class="brand auth-brand" href="#" aria-label="Diabétesz napló"><span class="brand-mark" aria-hidden="true">D</span><span>Diabétesz napló</span></a>
+      <p class="eyebrow">PRIVÁT EGÉSZSÉGNAPLÓ</p>
+      <h1 id="authTitle">Jelentkezz be</h1>
+      <p class="auth-description">A naplód megtekintéséhez lépj be a saját fiókodba. Az adatok fiókonként külön vannak elmentve.</p>
+      <form id="authForm" class="auth-form">
+        <label class="field">E-mail cím<input name="email" type="email" autocomplete="email" required placeholder="nev@email.com"></label>
+        <label class="field">Jelszó<input name="password" type="password" autocomplete="current-password" minlength="8" required placeholder="Legalább 8 karakter"></label>
+        <p class="form-error" id="authError" role="alert"></p>
+        <p class="form-hint" id="authHint" role="status"></p>
+        <button type="submit" class="primary-button" id="authSubmit">Belépés</button>
+        <button type="button" class="text-button auth-toggle" id="authModeToggle">Nincs még fiókod? Regisztráció</button>
+      </form>
+      <p class="auth-footnote">Egészségügyi adatokat csak saját fiókodba írj. A napló nem helyettesíti az orvosi tanácsot.</p>
+    </div>
+  </section>
+
+  <div class="app-shell" id="appShell" hidden>
     <aside class="sidebar" aria-label="Fő navigáció">
       <a class="brand" href="#calendar" aria-label="Naponta főoldal">
         <span class="brand-mark" aria-hidden="true">D</span><span>Diabétesz napló</span>
@@ -20,7 +38,7 @@
       <button class="nav-item active" data-view="calendar"><span class="nav-icon">▦</span>Naptár</button>
       <button class="nav-item" data-view="day"><span class="nav-icon">◷</span>Mai nap</button>
       <div class="sidebar-bottom">
-        <div class="privacy-note"><span class="lock-icon">⌑</span><div><strong>A te adataid</strong><br><span>Ezen az eszközön tárolva</span></div></div>
+        <div class="privacy-note"><span class="lock-icon">⌑</span><div><strong>A te adataid</strong><br><span>A saját fiókodhoz mentve</span></div></div>
         <button class="profile-link" id="profileButton"><span class="avatar" id="avatarInitial">–</span><span class="profile-link-text"><strong id="sideName">Profil beállítása</strong><small>Egészségügyi adatok</small></span><span class="chevron">›</span></button>
       </div>
     </aside>
@@ -29,6 +47,7 @@
       <header class="topbar">
         <div class="mobile-brand"><span class="brand-mark">D</span><span>Diabétesz napló</span></div>
         <div class="topbar-date" id="todayLabel"></div>
+        <div class="auth-status"><span id="authEmail"></span><button class="text-button" id="signOutButton">Kilépés</button></div>
         <button class="icon-button mobile-profile" id="mobileProfileButton" aria-label="Profil beállítása">☺</button>
       </header>
 
@@ -58,7 +77,7 @@
     </main>
   </div>
 
-  <nav class="mobile-nav" aria-label="Mobil navigáció">
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobil navigáció" hidden>
     <button class="mobile-nav-item active" data-view="calendar"><span>▦</span>Naptár</button>
     <button class="mobile-add" id="mobileAddButton" aria-label="Új bejegyzés hozzáadása">＋</button>
     <button class="mobile-nav-item" data-view="day"><span>◷</span>Napom</button>
@@ -94,7 +113,7 @@
   <dialog id="profileDialog" class="dialog">
     <form id="profileForm" method="dialog">
       <div class="dialog-heading"><div><p class="eyebrow">SZEMÉLYES BEÁLLÍTÁSOK</p><h2>Egészségügyi profil</h2></div><button type="button" class="icon-button close-dialog" aria-label="Bezárás">×</button></div>
-      <p class="dialog-intro">Az adatok segítenek személyessé tenni a naplódat. Most csak ezen az eszközön tárolódnak.</p>
+      <p class="dialog-intro">Az adatok segítenek személyessé tenni a naplódat, és a saját fiókodba kerülnek.</p>
       <label class="field">Neved <span class="optional">(nem kötelező)</span><input name="name" type="text" autocomplete="name" placeholder="Hogy szólíthatunk?"></label>
       <div class="field-row"><label class="field">Életkor<input name="age" type="number" min="1" max="120" inputmode="numeric" placeholder="év"></label><label class="field">Testmagasság<input name="height" type="number" min="40" max="250" inputmode="decimal" placeholder="cm"></label><label class="field">Testsúly<input name="weight" type="number" min="10" max="400" step="0.1" inputmode="decimal" placeholder="kg"></label></div>
       <label class="field">Diabétesz típusa<select name="diabetesType"><option value="">Válassz…</option><option>1-es típus</option><option>2-es típus</option><option>Terhességi diabétesz</option><option>Egyéb</option><option>Nem szeretném megadni</option></select></label>
@@ -102,10 +121,12 @@
         <div class="insulin-profile"><h3>Nappali inzulin</h3><div class="field-row"><label class="field">Inzulin neve<input name="dayInsulinName" type="text" placeholder="pl. NovoRapid"></label><label class="field">Alkalom / nap<input name="dayInsulinTimes" type="number" min="1" max="20" inputmode="numeric" placeholder="pl. 3"></label></div></div>
         <div class="insulin-profile"><h3>Éjjeli inzulin</h3><div class="field-row"><label class="field">Inzulin neve<input name="nightInsulinName" type="text" placeholder="pl. Lantus"></label><label class="field">Alkalom / nap<input name="nightInsulinTimes" type="number" min="1" max="20" inputmode="numeric" placeholder="pl. 1"></label></div></div>
       </div>
-      <p class="form-hint">A profil egészségügyi adatait csak te látod ezen a készüléken. Ne használd sürgősségi vagy kezelési döntésekhez.</p>
+      <p class="form-hint">A profil egészségügyi adatait a bejelentkezett fiókod védi. Ne használd sürgősségi vagy kezelési döntésekhez.</p>
       <div class="dialog-actions"><button type="button" class="secondary-button close-dialog">Mégse</button><button type="submit" class="primary-button">Profil mentése</button></div>
     </form>
   </dialog>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
