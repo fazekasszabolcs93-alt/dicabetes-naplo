@@ -1,1 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="34" fill="#236b50"/><text x="64" y="88" text-anchor="middle" font-family="Arial,sans-serif" font-size="78" font-weight="700" fill="#fff">D</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="55" y1="36" x2="464" y2="492" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#123d35"/>
+      <stop offset=".52" stop-color="#17634f"/>
+      <stop offset="1" stop-color="#23856a"/>
+    </linearGradient>
+    <linearGradient id="drop" x1="176" y1="98" x2="338" y2="417" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f7fff9"/>
+      <stop offset="1" stop-color="#d7f1df"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(175 0 0 175 190 134)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8ed9b1" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#8ed9b1" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="120" y="76" width="272" height="372" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dy="12"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".22"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <circle cx="190" cy="134" r="175" fill="url(#glow)"/>
+  <circle cx="256" cy="256" r="207" fill="none" stroke="#d7f6e4" stroke-opacity=".08" stroke-width="2"/>
+  <path d="M256 92c-31 51-119 144-119 232a119 119 0 1 0 238 0c0-88-88-181-119-232Z" fill="url(#drop)" filter="url(#shadow)"/>
+  <path d="M177 281h51l18-45 34 91 23-58h32" fill="none" stroke="#17654f" stroke-linecap="round" stroke-linejoin="round" stroke-width="13"/>
+  <circle cx="346" cy="269" r="8" fill="#e4a653"/>
+  <path d="M196 359c18 15 38 23 60 23" fill="none" stroke="#98cfa9" stroke-linecap="round" stroke-width="8"/>
+</svg>
