@@ -1,25 +1,37 @@
 # Diabétesz napló
 
-Első, telefonra optimalizált prototípus személyes vércukor- és inzulinnaplózáshoz.
-
-## Használat
-
-- Az `index.html` megnyitható közvetlenül prototípus kipróbálásához.
-- A telepíthető webalkalmazáshoz (PWA) HTTPS-en vagy localhoston kell kiszolgálni. Ilyenkor a böngésző menüjében az **Add to Home Screen / Hozzáadás a főképernyőhöz** művelettel lehet telepíteni.
-- Egyszerű helyi kiszolgálóhoz: `python3 -m http.server 8000`, majd `http://localhost:8000`.
+Telefonra optimalizált, telepíthető webalkalmazás vércukor- és inzulinbejegyzésekhez.
 
 ## Mi működik
 
-- Havi naptár, hónapváltás és napi részletek
-- Vércukor (mmol/L vagy mg/dL), inzulin napszak/mennyiség és szabad megjegyzés rögzítése
-- A profilban a nappali és éjjeli inzulin neve, valamint a napi alkalmak száma állítható
-- Dátumtartományos vércukor-jelentés napi és heti átlagokkal, nyomtatásból PDF-be menthető formában
-- Profil: életkor, magasság, testsúly, diabétesz típusa, inzulinok és napi alkalmak
-- Mobilnézet és főképernyőre telepíthető PWA alapok
-- Napló és profil mentése a böngésző helyi tárhelyére
+- Havi naptár és napi bejegyzések
+- Vércukor rögzítése mmol/L vagy mg/dL mértékegységben
+- Nappali és éjjeli inzulin, mennyiség és megjegyzés rögzítése
+- Egészségügyi profil és időszakos, napi/heti átlagokat tartalmazó PDF-jelentés
+- E-mailes fiók létrehozás és bejelentkezés Supabase Auth segítségével
+- Profil és naplóbejegyzések mentése Supabase adatbázisba
+- Mobilnézet és PWA telepíthetőségi alapok
 
-## Fontos állapot
+## Helyi indítás
 
-Ez még helyi prototípus, nem valódi fiókos szolgáltatás. Az emailes regisztráció és visszaigazolás, több eszköz közti szinkronizálás és felhasználónkénti hozzáférés szerveroldali hitelesítést és adatbázist igényel. A jelenlegi verzió nem küld adatot szerverre. A böngésző helyi tárhelyét más felhasználók ugyanazon az eszközön elérhetik, ezért közös vagy nyilvános eszközön ne használj valódi egészségügyi adatokat.
+Az `index.html` helyett indíts helyi HTTP-kiszolgálót, mert a bejelentkezés és a Service Worker HTTPS-en vagy localhoston működik:
 
-A felület naplózásra szolgál, nem ad diagnózist vagy adagolási javaslatot.
+```sh
+python3 -m http.server 8000
+```
+
+Ezután nyisd meg a `http://localhost:8000` címet.
+
+## Supabase
+
+- A böngésző beállításai a `supabase-config.js` fájlban vannak. A benne lévő Publishable key nyilvános használatra készült; Secret vagy service_role kulcs nem kerülhet ide.
+- A `supabase/schema.sql` állítja be a táblákat és a felhasználónkénti Row Level Security (RLS) szabályokat.
+- A Supabase Auth URL Configuration Site URL és Redirect URL értéke: `https://diabetes-journal.pages.dev`.
+- A Data API-nak engedélyezve kell lennie, és a `public` sémának elérhetőnek kell lennie. Az adatbázis táblái csak az `authenticated` szerepkörnek kapnak jogosultságot; RLS-szabályok csak a saját felhasználói azonosítóhoz tartozó sorokat engedik.
+- A Supabase alapértelmezett e-mail-küldője korlátozott. Külső címre történő regisztrációs megerősítéshez saját SMTP-szolgáltatót kell beállítani.
+
+## Adatvédelem
+
+A weboldal naplóit kizárólag bejelentkezett felhasználók tölthetik be. A Supabase RLS szabályai minden adatbázis-műveletnél ellenőrzik a fiókazonosságot. A Publishable key önmagában nem ad hozzáférést a naplóbejegyzésekhez.
+
+A korábban a böngészőben mentett helyi adatok nem töltődnek fel automatikusan. A felület naplózásra szolgál, nem ad diagnózist vagy adagolási javaslatot.
